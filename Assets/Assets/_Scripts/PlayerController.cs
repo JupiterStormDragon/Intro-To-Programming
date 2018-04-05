@@ -4,9 +4,17 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+    public enum States
+    {
+        OutOfCombatState,
+        CombatState
+    }
+
+    States CurrentState;
+
     private Rigidbody RB;
     public Animator Anim;
-    public float MovementSpeed = 100;
+    public float MovementSpeed = 200;
 
     public Vector3 IP; // Movement Input
 
@@ -29,7 +37,12 @@ public class PlayerController : MonoBehaviour {
     {
         if (RB != null)
         {
-            RB.AddForce(MoveInput * MovementSpeed * DeltaTime);
+            //RB.AddForce(MoveInput * MovementSpeed * DeltaTime);
+            float StoredYVelocity = RB.velocity.y; //Stores Y Velocity
+            Vector3 NewVelocity = MoveInput * MovementSpeed * DeltaTime; //Gets new velocity
+            Vector3 Vel = new Vector3(NewVelocity.x, StoredYVelocity, NewVelocity.z); //Creates new velocity keeping old Y velocity
+
+            RB.velocity = Vel;
         }
     }
 
@@ -43,13 +56,53 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-	// Update is called once per frame
-	void Update () {
+    public void doOutOfCombat()
+    {
+        doMovement(DT, IP);
+    }
+
+    public void doCombat()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
 
         DT = Time.deltaTime;
-
         KeyInput();
-        doMovement(DT, IP);
+
         updateAnim(Anim);
-	}
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            MovementSpeed = 400;
+        }
+        else
+        {
+            MovementSpeed = 200;
+        }
+
+    }
+
+    private void FixedUpdate()
+    {
+
+            switch(CurrentState)
+            {
+                case States.OutOfCombatState:
+                    doOutOfCombat();
+                    break;
+
+                case States.CombatState:
+                    doCombat();
+                    break;
+            }
+
+            KeyInput();
+            doMovement(DT, IP);
+            updateAnim(Anim);
+	    }
+
 }

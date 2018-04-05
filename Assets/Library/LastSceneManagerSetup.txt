@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/_Scripts/_Scenes/newscene.unity
+  isLoaded: 1
+  isActive: 1
