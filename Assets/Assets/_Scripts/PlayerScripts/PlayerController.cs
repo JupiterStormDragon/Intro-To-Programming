@@ -15,10 +15,17 @@ public class PlayerController : MonoBehaviour {
     private Rigidbody RB;
     public Animator Anim;
     public float MovementSpeed = 200;
+    public float SmoothDamp = 10;
+    public GameObject bullet;
+    public bool Attacking;
+    public float SetAttackDelay = .01f;
+
 
     public Vector3 IP; // Movement Input
 
     float DT;
+
+    public Camera cam;
 
 	// Use this for initialization
 	void Start () {
@@ -56,6 +63,21 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    public void doLook() //Rotate player towards the mouse cursor
+    {
+        RaycastHit hit;
+
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition); // creating ray from mouse point on screen
+
+        if (Physics.Raycast(ray, out hit, 1000000000)) // casting out a ray and populating our hit value
+        {
+            Vector3 forward = (transform.position - hit.point) * -1; // getting the direction between our position and our hitpoint position
+            forward.y = 0; // zeroing out the y to stay upright
+            forward.Normalize(); // normalize to calculate direction
+            transform.forward = Vector3.MoveTowards(transform.forward, forward, Time.deltaTime * SmoothDamp); // move our forward towards the direction between the positions
+        }
+    }
+
     public void doOutOfCombat()
     {
         doMovement(DT, IP);
@@ -63,7 +85,9 @@ public class PlayerController : MonoBehaviour {
 
     public void doCombat()
     {
-
+        if (Attacking)
+            Instantiate(bullet, transform.position, transform.rotation);
+            
     }
 
     // Update is called once per frame
@@ -88,7 +112,7 @@ public class PlayerController : MonoBehaviour {
 
     private void FixedUpdate()
     {
-
+        doLook();
             switch(CurrentState)
             {
                 case States.OutOfCombatState:

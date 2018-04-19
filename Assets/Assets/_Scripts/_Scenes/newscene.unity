@@ -336,13 +336,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1997341973}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.70090926, y: 0, z: 0, w: 0.71325046}
+  m_LocalPosition: {x: 0, y: 5.58, z: -0.59}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 89, y: 0, z: 0}
 --- !u!1 &2055465567
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,7 +357,7 @@ GameObject:
   - component: {fileID: 2055465568}
   - component: {fileID: 2055465573}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -457,7 +457,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Anim: {fileID: 25026931}
   MovementSpeed: 200
+  SmoothDamp: 10
+  bullet: {fileID: 0}
+  Attacking: 1
+  SetAttackDelay: 0.01
   IP: {x: 0, y: 0, z: 0}
+  cam: {fileID: 1997341977}
 --- !u!1 &2104678015
 GameObject:
   m_ObjectHideFlags: 0
