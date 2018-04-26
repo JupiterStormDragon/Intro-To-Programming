@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour {
         CombatState
     }
 
-    States CurrentState;
+    public States CurrentState;
 
     private Rigidbody RB;
     public Animator Anim;
@@ -18,8 +18,9 @@ public class PlayerController : MonoBehaviour {
     public float SmoothDamp = 10;
     public GameObject bullet;
     public bool Attacking;
-    public float SetAttackDelay = .01f;
+    public float AttackDelay = .01f;
 
+    public GameObject Bullet;
 
     public Vector3 IP; // Movement Input
 
@@ -27,13 +28,13 @@ public class PlayerController : MonoBehaviour {
 
     public Camera cam;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start() {
 
         RB = GetComponent<Rigidbody>(); //Gets Rigidbody on object
-        // anim passed in through editor
-	}
-	
+                                        // anim passed in through editor
+    }
+
     public void KeyInput()
     {
         IP.x = Input.GetAxisRaw("Horizontal");
@@ -83,10 +84,29 @@ public class PlayerController : MonoBehaviour {
         doMovement(DT, IP);
     }
 
+    public void DoFire()
+    {
+
+        GameObject temp = Instantiate(Bullet, transform.position, transform.rotation);
+
+        BulletController TempBC = temp.GetComponent<BulletController>();
+
+        temp.GetComponent<Rigidbody>().velocity = transform.forward* TempBC.BulletSpeed;
+
+        AttackDelay = TempBC.BulletDelay;
+
+        TempBC.Owner = gameObject;
+
+    }
+
     public void doCombat()
     {
-        if (Attacking)
-            Instantiate(bullet, transform.position, transform.rotation);
+        doMovement(DT, IP);
+        AttackDelay -= DT;
+        if (Attacking && AttackDelay <= 0)
+        {
+            DoFire();
+        }
             
     }
 
