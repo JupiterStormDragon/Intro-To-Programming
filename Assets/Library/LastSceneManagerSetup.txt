@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/_Scripts/_Scenes/newscene.unity
+- path: Assets/_Scripts/_Scenes/AITest.unity
   isLoaded: 1
   isActive: 1
